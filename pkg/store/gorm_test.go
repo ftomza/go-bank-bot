@@ -68,7 +68,6 @@ func (suite *GormUserRepositoryTestSuite) Test_GormUserRepository_Store() {
 
 	suite.Run("fail unique", func() {
 		item := domain.User{
-			ID:        2,
 			BotUserID: 13,
 		}
 		err := suite.Repo.Store(suite.Ctx, &item)
@@ -80,12 +79,12 @@ func (suite *GormUserRepositoryTestSuite) Test_GormUserRepository_Store() {
 func (suite *GormUserRepositoryTestSuite) Test_GormUserRepository_Get() {
 	suite.Run("ok", func() {
 		item := domain.User{
-			ID:        1,
-			BotUserID: 13,
+			ID:        2,
+			BotUserID: 14,
 		}
 		err := suite.Repo.Store(suite.Ctx, &item)
 		if suite.NoError(err, "Store") {
-			user, err := suite.Repo.Get(suite.Ctx, 1)
+			user, err := suite.Repo.Get(suite.Ctx, 2)
 			if suite.NoError(err) {
 				suite.Equal(user.ID, item.ID)
 				suite.Equal(user.BotUserID, item.BotUserID)
@@ -97,12 +96,12 @@ func (suite *GormUserRepositoryTestSuite) Test_GormUserRepository_Get() {
 func (suite *GormUserRepositoryTestSuite) Test_GormUserRepository_GetByBotUserID() {
 	suite.Run("ok", func() {
 		item := domain.User{
-			ID:        1,
-			BotUserID: 13,
+			ID:        3,
+			BotUserID: 15,
 		}
 		err := suite.Repo.Store(suite.Ctx, &item)
 		if suite.NoError(err, "Store") {
-			user, err := suite.Repo.GetByBotUserID(suite.Ctx, 13)
+			user, err := suite.Repo.GetByBotUserID(suite.Ctx, 15)
 			if suite.NoError(err) {
 				suite.Equal(user.ID, item.ID)
 				suite.Equal(user.BotUserID, item.BotUserID)
@@ -114,8 +113,8 @@ func (suite *GormUserRepositoryTestSuite) Test_GormUserRepository_GetByBotUserID
 func (suite *GormUserRepositoryTestSuite) Test_GormUserRepository_Update() {
 	suite.Run("ok", func() {
 		item := domain.User{
-			ID:        1,
-			BotUserID: 13,
+			ID:        4,
+			BotUserID: 16,
 		}
 		err := suite.Repo.Store(suite.Ctx, &item)
 		if !suite.NoError(err, "Store") {
@@ -123,7 +122,7 @@ func (suite *GormUserRepositoryTestSuite) Test_GormUserRepository_Update() {
 		}
 		item.SheetID = "test"
 		if suite.NoError(suite.Repo.Update(suite.Ctx, &item)) {
-			user, err := suite.Repo.Get(suite.Ctx, 1)
+			user, err := suite.Repo.Get(suite.Ctx, 4)
 			if suite.NoError(err) {
 				suite.Equal(user.ID, item.ID)
 				suite.Equal(user.BotUserID, item.BotUserID)
@@ -134,11 +133,10 @@ func (suite *GormUserRepositoryTestSuite) Test_GormUserRepository_Update() {
 
 	suite.Run("fail", func() {
 		item := domain.User{
-			ID:        1,
-			BotUserID: 13,
+			ID:        5,
+			BotUserID: 17,
+			SheetID:   "test",
 		}
-		item.ID = 2
-		item.SheetID = "test"
 		err := suite.Repo.Update(suite.Ctx, &item)
 		suite.EqualError(err, "record not found", "Store")
 	})
