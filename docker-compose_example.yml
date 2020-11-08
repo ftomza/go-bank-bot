@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  bot:
+    build: Dockerfile
+    environment:
+      DEBUG: false
+      TOKEN: TelegramToken
+      CREDENTIALS: |-
+        {}
+    volumes:
+    - /var/lib/go_bank_bot/app.db:/app/app.db
