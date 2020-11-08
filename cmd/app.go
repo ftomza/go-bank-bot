@@ -16,9 +16,15 @@ import (
 
 func main() {
 
-	db, err := gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
+	debug := os.Getenv("DEBUG")
+
+	db, err := gorm.Open(sqlite.Open("./data/app.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed to connect database: %v", err)
+	}
+
+	if debug != "" {
+		db = db.Debug()
 	}
 
 	userRepo := store.NewGormUserRepository(db)
@@ -45,8 +51,6 @@ func main() {
 	if cred == "" {
 		log.Fatalf("TOKEN not set")
 	}
-
-	debug := os.Getenv("DEBUG")
 
 	tb, _ := telebot.NewBot(telebot.Settings{
 		Token:   token,
