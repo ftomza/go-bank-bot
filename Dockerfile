@@ -2,7 +2,7 @@ FROM golang:1.15 AS build_base
 
 WORKDIR /tmp/service
 
-LABEL VER=2020.1.3
+LABEL VER=2020.1.4
 
 RUN git clone https://github.com/ftomza/go-bank-bot
 
