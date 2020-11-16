@@ -311,7 +311,7 @@ func (tg *TelegramBot) setSheetHandler(c telegramBotCommand, m *telebot.Message)
 					if err != nil {
 						return err
 					}
-					return tg.Send(msg.Sender, "Google token: ✔")
+					return tg.Send(msg.Sender, "Sheet ID: ✔")
 				})
 			})
 		})
@@ -329,7 +329,7 @@ func (tg *TelegramBot) setSheetListHandler(c telegramBotCommand, m *telebot.Mess
 					if err != nil {
 						return err
 					}
-					return tg.Send(msg.Sender, "Sheet ID: ✔")
+					return tg.Send(msg.Sender, "Sheet List: ✔")
 				})
 			})
 		})
@@ -346,7 +346,7 @@ func (tg *TelegramBot) setPatternsHandler(c telegramBotCommand, m *telebot.Messa
 					if err != nil {
 						return err
 					}
-					return tg.Send(msg.Sender, "Sheet List: ✔")
+					return tg.Send(msg.Sender, "Patterns: ✔")
 				})
 			})
 		})
