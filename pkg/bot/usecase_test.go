@@ -23,8 +23,8 @@ func Test_prepareTransactionOfMessage(t *testing.T) {
 		{
 			name: "ok",
 			args: args{
-				pattern: `^(?P<currency>[A-Z]{3}?) (?P<amount>[0-9\.]+?) is (?P<direction>c?)harged on .*[Cc]ard.*(?P<account>5098?) from (?P<party>.+?) on (?P<date>[0-9\/]{5,}?)\. Combined Avail.Bal is (?P<total>[0-9]+\.[0-9]{2}?).*$`,
-				msg:     "AED 1123.33 is charged on Credit Card ending 5098 from FACEBK on 31/10. Combined Avail.Bal is 13274.59. Ref statement for exact amnt.",
+				pattern: `^(?P<currency>[A-Z]{3}?) (?P<amount>[\,0-9\.]+?) is (?P<direction>c?)harged on .*[Cc]ard.*(?P<account>5098?) from (?P<party>.+?) on (?P<date>[0-9\/]{5,}?)\. Combined Avail.Bal is (?P<total>[\,0-9]+\.[0-9]{2}?).*$`,
+				msg:     "AED 1,123.33 is charged on Credit Card ending 5098 from FACEBK on 31/10. Combined Avail.Bal is 13,274.59. Ref statement for exact amnt.",
 			},
 			want: &domain.Transaction{
 				Account:   "5098",
@@ -34,7 +34,7 @@ func Test_prepareTransactionOfMessage(t *testing.T) {
 				Currency:  "AED",
 				Date:      time.Date(2020, 10, 31, 00, 00, 00, 00, time.UTC),
 				Total:     decimal.NewFromFloat(13274.59),
-				Raw:       "AED 1123.33 is charged on Credit Card ending 5098 from FACEBK on 31/10. Combined Avail.Bal is 13274.59. Ref statement for exact amnt.",
+				Raw:       "AED 1,123.33 is charged on Credit Card ending 5098 from FACEBK on 31/10. Combined Avail.Bal is 13,274.59. Ref statement for exact amnt.",
 			},
 			wantErr: false,
 		},

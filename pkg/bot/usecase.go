@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"regexp"
 	"strings"
 	"time"
@@ -95,6 +96,7 @@ func (tg *TelegramBot) ParseAndSaveMessage(userID int, msg string) (bool, error)
 	err := tg.wrapperRepoUserAndRepoTrx(userID, func(u domain.User, trx domain.TransactionRepository) error {
 		for _, v := range u.TrxPatterns {
 			if trans, err := prepareTransactionOfMessage(v.Pattern, msg); err != nil {
+				log.Println("prepare transaction of message: ", err)
 				return err
 			} else if trans != nil {
 				ok = true
@@ -127,12 +129,12 @@ func prepareTransactionOfMessage(pattern, msg string) (*domain.Transaction, erro
 		return nil, nil
 	}
 
-	amount, err := decimal.NewFromString(params["amount"])
+	amount, err := decimal.NewFromString(strings.Replace(params["amount"], ",", "", -1))
 	if err != nil {
 		return nil, err
 	}
 
-	total, _ := decimal.NewFromString(params["total"])
+	total, _ := decimal.NewFromString(strings.Replace(params["total"], ",", "", -1))
 
 	date, err := parseDate(params["date"])
 	if err != nil {
@@ -154,6 +156,9 @@ func prepareTransactionOfMessage(pattern, msg string) (*domain.Transaction, erro
 }
 
 func parseDate(text string) (time.Time, error) {
+	if text == "" {
+		return time.Now(), nil
+	}
 	if strings.Count(text, "/") == 1 {
 		text = fmt.Sprintf("%s/%d", text, time.Now().Year())
 	}
